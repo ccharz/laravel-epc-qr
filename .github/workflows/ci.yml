@@ -1,22 +1,50 @@
-name: CI-coverage
+name: Tests
 
-on: [push]
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - "*"
+  schedule:
+  - cron: '0 0 * * *'
 
 jobs:
-  build-test:
-    runs-on: ubuntu-latest
+  php-tests:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 15
+    env:
+      COMPOSER_NO_INTERACTION: 1
+
+    strategy:
+      matrix:
+        php: [8.0, 7.4]
+        laravel: [8.*, 7.*]
+        dependency-version: [prefer-lowest, prefer-stable]
+        exclude:
+        - laravel: 8.*
+          php: 7.4
+        - php: 8.0
+          dependency-version: prefer-lowest
+
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
 
     steps:
-      - uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - uses: php-actions/composer@v5
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
+        coverage: none
+        extensions: mbstring gd
 
-      - name: PHPUnit Tests
-        uses: php-actions/phpunit@v2
-        with:
-          php_extensions: xdebug
-          bootstrap: vendor/autoload.php
-          configuration: phpunit.xml
-          args: --coverage-text
-        env:
-          XDEBUG_MODE: coverage
+    - name: Install dependencies
+      run: |
+        composer require "laravel/framework:${{ matrix.laravel }}" --no-update --no-progress
+        composer update --${{ matrix.dependency-version }} --prefer-dist --no-progress
+
+    - name: Execute Unit Tests
+      run: composer test
