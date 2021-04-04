@@ -23,8 +23,6 @@ jobs:
         laravel: [8.*, 7.*]
         dependency-version: [prefer-lowest, prefer-stable]
         exclude:
-        - laravel: 8.*
-          php: 7.4
         - php: 8.0
           dependency-version: prefer-lowest
 
