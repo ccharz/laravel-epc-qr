@@ -1,0 +1,59 @@
+{
+    "name": "ccharz/laravel-epc-qr",
+    "description": "Laravel EPC-QR-Code Generator for sepa payments",
+    "keywords": [
+        "epc",
+        "qr",
+        "sepa"
+    ],
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Christian Charzewski",
+            "email": "chris@cw-software.at",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.3 || ^8.0",
+        "endroid/qr-code": "^4.0",
+        "illuminate/support": "^7.0 || ^8.0"
+    },
+    "require-dev": {
+        "nunomaduro/larastan": "^0.6",
+        "orchestra/testbench": "^6.0",
+        "phpstan/phpstan": "^0.12",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ccharz\\LaravelEpcQr\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ccharz\\LaravelEpcQr\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage",
+        "static-analysis": [
+            "vendor/bin/phpstan analyse $(git diff --name-only --diff-filter=ACMRTUXB HEAD~..HEAD -- '*.php') -c phpstan.neon"
+        ]
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ccharz\\LaravelEpcQr\\LaravelEpcQrServiceProvider"
+            ],
+            "aliases": {
+                "EPCQR": "Ccharz\\LaravelEpcQr\\EPCQR"
+            }
+        }
+    }
+}
