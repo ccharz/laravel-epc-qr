@@ -213,6 +213,8 @@ class LaravelEpcQr
     {
         $this->reconciliation_reference = $reference;
 
+        $this->reconciliation_text = '';
+
         return $this;
     }
 
@@ -226,6 +228,8 @@ class LaravelEpcQr
     public function text(string $text): self
     {
         $this->reconciliation_text = $text;
+
+        $this->reconciliation_reference = '';
 
         return $this;
     }
