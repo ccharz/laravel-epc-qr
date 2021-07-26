@@ -12,7 +12,7 @@ class LaravelEpcQrServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('epcqr', function ($app) {
-            return new LaravelEpcQr($app['files']);
+            return new LaravelEpcQr($app['filesystem']);
         });
     }
 }

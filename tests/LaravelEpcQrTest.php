@@ -123,4 +123,18 @@ class LaravelEpcQrTest extends TestCase
 
         $this->assertNotEmpty($output->getContent());
     }
+
+    /**
+     * @return void
+     */
+    public function testStore(): void
+    {
+        Storage::fake('test_disk');
+
+        $output = EPCQR::amount(150)
+            ->imageFormat('svg')
+            ->save('test.svg', 'test_disk');
+
+        Storage::disk('test_disk')->assertExists('test.svg');
+    }
 }

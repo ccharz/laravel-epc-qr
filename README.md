@@ -4,6 +4,8 @@ Library for generating epc qr codes for sepa payments. See https://de.wikipedia.
 
 QR-Code generation is provided by https://github.com/endroid/qr-code
 
+If you need a more general solution without the dependencies of endroid and laravel have a look at https://github.com/smhg/sepa-qr-data-php
+
 ### Installation
 
 Require this package in your composer.json and update composer. 
@@ -64,6 +66,17 @@ $result = $builder
     ->build();
 ```
 
+If you want to store the output into a file use the save method
+
+
+```php
+return EPCQR::amount(150)
+    ->receiver('AT000000000000000000', 'ABCDATWW', 'Max Mustermann')
+    ->note('test')
+    ->purpose('AT12')
+    ->save('qr.png', 'mydisk');
+```
+
 ### More Information on EPC QR
 
 * https://de.wikipedia.org/wiki/EPC-QR-Code
@@ -71,5 +84,4 @@ $result = $builder
 
 ### TODO
 
-* Validation
-* Disk Support
+* EPC Data Validation
