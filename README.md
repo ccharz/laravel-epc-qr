@@ -73,5 +73,4 @@ $result = $builder
 
 ### TODO
 
-* Validation
-* Disk Support
+* EPC Data Validation
