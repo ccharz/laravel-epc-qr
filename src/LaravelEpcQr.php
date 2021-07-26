@@ -8,7 +8,7 @@ use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelMedium;
 use Endroid\QrCode\Writer\Result\ResultInterface;
 use Endroid\QrCode\Writer\SvgWriter;
-use Illuminate\Filesystem\Filesystem;
+use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Http\Response;
 use InvalidArgumentException;
 
@@ -24,9 +24,9 @@ class LaravelEpcQr
     public const ENCODING_ISO8859_15 = 8;
 
     /**
-     * @var \Illuminate\Filesystem\Filesystem
+     * @var FilesystemManager
      */
-    protected Filesystem $filesystem;
+    protected FilesystemManager $filesystemManager;
 
     /**
      * @var string
@@ -105,7 +105,7 @@ class LaravelEpcQr
     /**
      * @var array
      */
-    private array $encodings = [
+    protected array $encodings = [
         self::ENCODING_UTF_8 => 'UTF-8',
         self::ENCODING_ISO8859_1 => 'ISO-8859-1',
         self::ENCODING_ISO8859_2 => 'ISO-8859-2',
@@ -117,11 +117,13 @@ class LaravelEpcQr
     ];
 
     /**
-     * @param \Illuminate\Filesystem\Filesystem $filesystem
+     * @param FilesystemManager $filesystemManager
+     *
+     * @return void
      */
-    public function __construct(Filesystem $filesystem)
+    public function __construct(FilesystemManager $filesystemManager)
     {
-        $this->filesystem = $filesystem;
+        $this->filesystemManager = $filesystemManager;
     }
 
     /**
@@ -380,11 +382,17 @@ class LaravelEpcQr
     }
 
     /**
-     * @return static
+     * @param string $filename
+     * @param string|null $disk
+     *
+     * @return self
      */
-    public function save(string $filename = 'qr.png'): self
+    public function save(string $filename = 'qr.png', ?string $disk = null): self
     {
-        $this->filesystem->put($filename, $this->build()->getString());
+        $this->filesystemManager->disk($disk)->put(
+            $filename,
+            $this->build()->getString()
+        );
 
         return $this;
     }
