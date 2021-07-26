@@ -385,15 +385,13 @@ class LaravelEpcQr
      * @param string $filename
      * @param string|null $disk
      *
-     * @return self
+     * @return bool
      */
-    public function save(string $filename = 'qr.png', ?string $disk = null): self
+    public function save(string $filename = 'qr.png', ?string $disk = null): bool
     {
-        $this->filesystemManager->disk($disk)->put(
+        return $this->filesystemManager->disk($disk)->put(
             $filename,
             $this->build()->getString()
         );
-
-        return $this;
     }
 }

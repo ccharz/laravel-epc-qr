@@ -66,6 +66,17 @@ $result = $builder
     ->build();
 ```
 
+If you want to store the output into a file use the save method
+
+
+```php
+return EPCQR::amount(150)
+    ->receiver('AT000000000000000000', 'ABCDATWW', 'Max Mustermann')
+    ->note('test')
+    ->purpose('AT12')
+    ->save('qr.png', 'mydisk');
+```
+
 ### More Information on EPC QR
 
 * https://de.wikipedia.org/wiki/EPC-QR-Code
