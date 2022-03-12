@@ -85,3 +85,7 @@ return EPCQR::amount(150)
 ### TODO
 
 * EPC Data Validation
+
+## License
+
+The MIT License (MIT)
