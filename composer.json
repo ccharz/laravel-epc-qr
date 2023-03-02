@@ -16,13 +16,13 @@
         }
     ],
     "require": {
-        "php": "^7.3 || ^8.0",
+        "php": "^7.4 || ^8.0",
         "endroid/qr-code": "^4.0",
-        "illuminate/support": "^8|^9"
+        "illuminate/support": "^8|^9|^10"
     },
     "require-dev": {
         "nunomaduro/larastan": "^1|^2",
-        "orchestra/testbench": "^6|^7"
+        "orchestra/testbench": "^6|^7|^8"
     },
     "autoload": {
         "psr-4": {
