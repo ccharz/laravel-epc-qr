@@ -1,6 +1,9 @@
 name: Tests
 
 on:
+  workflow_dispatch:
+    branches:
+    - "*"
   push:
     branches:
     - "*"
