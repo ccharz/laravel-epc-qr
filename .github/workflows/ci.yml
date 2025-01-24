@@ -12,12 +12,12 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.0, 8.1, 8.2, 8.3]
+        php: [8.0, 8.1, 8.2, 8.3, 8.4]
         laravel: [8, 9, 10, 11]
         exclude:
-          - php: '8.0'
+          - php: "8.0"
             laravel: 10
-          - php: '8.0'
+          - php: "8.0"
             laravel: 11
           - php: 8.1
             laravel: 11
@@ -31,22 +31,22 @@ jobs:
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php }}
-        extensions: mbstring gd
-        ini-values: error_reporting=E_ALL
-        tools: composer:v2
-        coverage: none
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring gd
+          ini-values: error_reporting=E_ALL
+          tools: composer:v2
+          coverage: none
 
-    - name: Install dependencies
-      run: |
+      - name: Install dependencies
+        run: |
           composer require "illuminate/contracts=^${{ matrix.laravel }}" --dev --no-update
           composer update --prefer-dist --no-interaction --no-progress
 
-    - name: Execute tests
-      run: vendor/bin/phpunit
+      - name: Execute tests
+        run: vendor/bin/phpunit
