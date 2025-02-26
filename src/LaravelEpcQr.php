@@ -5,7 +5,7 @@ namespace Ccharz\LaravelEpcQr;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Builder\BuilderInterface;
 use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelMedium;
+use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\Writer\Result\ResultInterface;
 use Endroid\QrCode\Writer\SvgWriter;
 use Illuminate\Filesystem\FilesystemManager;
@@ -15,91 +15,55 @@ use InvalidArgumentException;
 class LaravelEpcQr
 {
     public const ENCODING_UTF_8 = 1;
+
     public const ENCODING_ISO8859_1 = 2;
+
     public const ENCODING_ISO8859_2 = 3;
+
     public const ENCODING_ISO8859_4 = 4;
+
     public const ENCODING_ISO8859_5 = 5;
+
     public const ENCODING_ISO8859_7 = 6;
+
     public const ENCODING_ISO8859_10 = 7;
+
     public const ENCODING_ISO8859_15 = 8;
 
-    /**
-     * @var FilesystemManager
-     */
     protected FilesystemManager $filesystemManager;
 
-    /**
-     * @var string
-     */
     protected string $receiver_bank_bic = '';
 
-    /**
-     * @var string
-     */
     protected string $receiver_account_owner = '';
 
-    /**
-     * @var string
-     */
     protected string $receiver_account_iban = '';
 
-    /**
-     * @var string
-     */
     protected string $currency = 'EUR';
 
-    /**
-     * @var float
-     */
     protected float $amount = 0;
 
-    /**
-     * @var string
-     */
     protected string $purpose_code = '';
 
-    /**
-     * @var string
-     */
     protected string $reconciliation_reference = '';
 
-    /**
-     * @var string
-     */
     protected string $reconciliation_text = '';
 
-    /**
-     * @var string
-     */
     protected string $user_note = '';
 
     /**
      * Size of the QR Code
-     *
-     * @var int
      */
     protected int $size = 300;
 
     /**
      * Margin of the QR Code
-     *
-     * @var int
      */
     protected int $margin = 10;
 
-    /**
-     * @var string
-     */
     protected string $line_seperator = "\n";
 
-    /**
-     * @var int
-     */
     protected int $encoding = self::ENCODING_ISO8859_15;
 
-    /**
-     * @var string
-     */
     protected string $image_format = 'png';
 
     /**
@@ -117,8 +81,6 @@ class LaravelEpcQr
     ];
 
     /**
-     * @param FilesystemManager $filesystemManager
-     *
      * @return void
      */
     public function __construct(FilesystemManager $filesystemManager)
@@ -127,9 +89,6 @@ class LaravelEpcQr
     }
 
     /**
-     * @param float $amount
-     * @param string $currency
-     *
      * @return static
      */
     public function amount(float $amount, string $currency = 'EUR'): self
@@ -142,10 +101,6 @@ class LaravelEpcQr
     }
 
     /**
-     * @param string $iban
-     * @param string $bic
-     * @param string $account_owner
-     *
      * @return static
      */
     public function receiver(string $iban, string $bic, string $account_owner): self
@@ -157,8 +112,6 @@ class LaravelEpcQr
     }
 
     /**
-     * @param string $iban
-     *
      * @return static
      */
     public function iban(string $iban): self
@@ -169,8 +122,6 @@ class LaravelEpcQr
     }
 
     /**
-     * @param string $bic
-     *
      * @return static
      */
     public function bic(string $bic): self
@@ -181,8 +132,6 @@ class LaravelEpcQr
     }
 
     /**
-     * @param string $account_owner
-     *
      * @return static
      */
     public function accountOwner(string $account_owner): self
@@ -193,8 +142,7 @@ class LaravelEpcQr
     }
 
     /**
-     * @param string $code 4-Character purpose code
-     *
+     * @param  string  $code  4-Character purpose code
      * @return static
      */
     public function purpose(string $code): self
@@ -207,8 +155,7 @@ class LaravelEpcQr
     /**
      * Sets the reconciliation reference.
      *
-     * @param string $reference Reconciliation reference (35-Bytes)
-     *
+     * @param  string  $reference  Reconciliation reference (35-Bytes)
      * @return static
      */
     public function reference(string $reference): self
@@ -223,8 +170,7 @@ class LaravelEpcQr
     /**
      * Sets the reconciliation text.
      *
-     * @param string $text Reconciliation text (140 Characters)
-     *
+     * @param  string  $text  Reconciliation text (140 Characters)
      * @return static
      */
     public function text(string $text): self
@@ -239,7 +185,6 @@ class LaravelEpcQr
     /**
      * Add a user note / additional message
      *
-     * @param string $note
      *
      * @return static
      */
@@ -251,8 +196,6 @@ class LaravelEpcQr
     }
 
     /**
-     * @param int $size
-     *
      * @return static
      */
     public function size(int $size): self
@@ -263,15 +206,13 @@ class LaravelEpcQr
     }
 
     /**
-     * @param int $encoding
-     *
      * @return static
      *
      * @throws InvalidArgumentException
      */
     public function encoding(int $encoding): self
     {
-        if (!isset($this->encodings[$encoding])) {
+        if (! isset($this->encodings[$encoding])) {
             throw new InvalidArgumentException('Invalid encoding selected');
         }
 
@@ -280,11 +221,6 @@ class LaravelEpcQr
         return $this;
     }
 
-    /**
-     * @param int $margin
-     *
-     * @return self
-     */
     public function margin(int $margin): self
     {
         $this->margin = $margin;
@@ -292,11 +228,6 @@ class LaravelEpcQr
         return $this;
     }
 
-    /**
-     * @param string $image_format
-     *
-     * @return self
-     */
     public function imageFormat(string $image_format): self
     {
         $this->image_format = $image_format;
@@ -304,9 +235,6 @@ class LaravelEpcQr
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function output(): string
     {
         $output = [
@@ -318,7 +246,7 @@ class LaravelEpcQr
             $this->receiver_account_owner ?? '',
             $this->receiver_account_iban ?? '',
             $this->amount && $this->currency
-                ? $this->currency . number_format($this->amount, 2, '.', '')
+                ? $this->currency.number_format($this->amount, 2, '.', '')
                 : '',
             $this->purpose_code ?? '',
             $this->reconciliation_reference ?? '',
@@ -332,32 +260,26 @@ class LaravelEpcQr
         );
     }
 
-    /**
-     * @return \Endroid\QrCode\Builder\BuilderInterface
-     */
     public function prepareBuilder(): BuilderInterface
     {
         $builder = Builder::create()
             ->encoding(
                 new Encoding($this->encodings[$this->encoding])
             )
-            ->errorCorrectionLevel(new ErrorCorrectionLevelMedium())
+            ->errorCorrectionLevel(ErrorCorrectionLevel::Medium)
             ->data($this->output())
             ->size($this->size)
             ->margin($this->margin);
 
         switch ($this->image_format) {
             case 'svg':
-                $builder->writer(new SvgWriter());
+                $builder->writer(new SvgWriter);
                 break;
         }
 
         return $builder;
     }
 
-    /**
-     * @return \Endroid\QrCode\Writer\Result\ResultInterface
-     */
     public function build(): ResultInterface
     {
         $builder = $this->prepareBuilder();
@@ -367,12 +289,10 @@ class LaravelEpcQr
 
     /**
      * Return a response with the PDF to show in the browser
-     *
-     * @return \Illuminate\Http\Response
      */
     public function stream(): Response
     {
-        $result =  $this->build();
+        $result = $this->build();
 
         return new Response(
             $result->getString(),
@@ -381,12 +301,6 @@ class LaravelEpcQr
         );
     }
 
-    /**
-     * @param string $filename
-     * @param string|null $disk
-     *
-     * @return bool
-     */
     public function save(string $filename = 'qr.png', ?string $disk = null): bool
     {
         return $this->filesystemManager->disk($disk)->put(

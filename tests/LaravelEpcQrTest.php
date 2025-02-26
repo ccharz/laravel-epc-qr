@@ -11,10 +11,7 @@ use Illuminate\Support\Facades\Storage;
 
 class LaravelEpcQrTest extends TestCase
 {
-    /**
-     * @return void
-     */
-    public function testBasicGeneration(): void
+    public function test_basic_generation(): void
     {
         $output = EPCQR::amount(150)
             ->receiver('AT000000000000000000', 'ABCDATWW', 'Christian C')
@@ -29,10 +26,7 @@ class LaravelEpcQrTest extends TestCase
         );
     }
 
-    /**
-     * @return void
-     */
-    public function testReference(): void
+    public function test_reference(): void
     {
         $output = EPCQR::amount(150)
             ->receiver('AT000000000000000000', 'ABCDATWW', 'Christian C')
@@ -47,10 +41,7 @@ class LaravelEpcQrTest extends TestCase
         );
     }
 
-    /**
-     * @return void
-     */
-    public function testEncoding(): void
+    public function test_encoding(): void
     {
         $output = EPCQR::amount(150)
             ->encoding(LaravelEpcQr::ENCODING_UTF_8)
@@ -66,10 +57,7 @@ class LaravelEpcQrTest extends TestCase
         );
     }
 
-    /**
-     * @return void
-     */
-    public function testInvalidEncoding(): void
+    public function test_invalid_encoding(): void
     {
         $this->expectException('InvalidArgumentException');
 
@@ -78,10 +66,7 @@ class LaravelEpcQrTest extends TestCase
             ->output();
     }
 
-    /**
-     * @return void
-     */
-    public function testBuild(): void
+    public function test_build(): void
     {
         $output = EPCQR::amount(150)
             ->size(500)
@@ -96,10 +81,7 @@ class LaravelEpcQrTest extends TestCase
         $this->assertSame(540, imagesy($image));
     }
 
-    /**
-     * @return void
-     */
-    public function testBuildSvg(): void
+    public function test_build_svg(): void
     {
         $output = EPCQR::amount(150)
             ->imageFormat('svg')
@@ -108,10 +90,7 @@ class LaravelEpcQrTest extends TestCase
         $this->assertTrue($output instanceof SvgResult);
     }
 
-    /**
-     * @return void
-     */
-    public function testStream(): void
+    public function test_stream(): void
     {
         $output = EPCQR::amount(150)
             ->imageFormat('svg')
@@ -124,10 +103,7 @@ class LaravelEpcQrTest extends TestCase
         $this->assertNotEmpty($output->getContent());
     }
 
-    /**
-     * @return void
-     */
-    public function testStore(): void
+    public function test_store(): void
     {
         Storage::fake('test_disk');
 

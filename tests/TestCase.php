@@ -13,7 +13,6 @@ class TestCase extends \Orchestra\Testbench\TestCase
      * the config/app.php file.
      *
      * @param  \Illuminate\Foundation\Application  $app
-     *
      * @return array
      */
     protected function getPackageProviders($app)
@@ -30,13 +29,12 @@ class TestCase extends \Orchestra\Testbench\TestCase
      * facades upon which your package depends, e.g. Cartalyst/Sentry.
      *
      * @param  \Illuminate\Foundation\Application  $app
-     *
      * @return array
      */
     protected function getPackageAliases($app)
     {
         return [
-            'EPCQR' =>  'Ccharz\LaravelEpcQr\EPCQR',
+            'EPCQR' => 'Ccharz\LaravelEpcQr\EPCQR',
         ];
     }
 }
