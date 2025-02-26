@@ -103,7 +103,7 @@ class LaravelEpcQr
     protected string $image_format = 'png';
 
     /**
-     * @var array
+     * @var array<int, string>
      */
     protected array $encodings = [
         self::ENCODING_UTF_8 => 'UTF-8',
@@ -267,7 +267,7 @@ class LaravelEpcQr
      *
      * @return static
      *
-     * @throws InvalidArgumentException;
+     * @throws InvalidArgumentException
      */
     public function encoding(int $encoding): self
     {
